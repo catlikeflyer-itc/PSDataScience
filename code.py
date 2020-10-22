@@ -18,6 +18,7 @@ nut = pd.read_csv('nutrition.csv', index_col=1) #nut :)
 print(f'Dataframe of size {nut.shape[0]} and {nut.shape[1]}')
 
 #%% Cleaned dF
+
 newnut = nut.dropna()
 newnut2 = newnut[['calories','total_fat','carbohydrate','sodium','protein']]
 newnut2
@@ -64,11 +65,27 @@ sns.boxplot(x=newnut2['protein'], color="blue", ax=axes[2, 0])
 
 f.delaxes(axes[2,1])
 
+#%%
+Q1 = newnut2.quantile(0.25)
+Q3 = newnut2.quantile(0.75)
+IQR = Q3 - Q1
+
+finalnut = newnut2[~((newnut2 < (Q1 - 2.5 * IQR)) |(10000 > (Q3 + 2.5 * IQR))).any(axis=1)]
+
+# -------------------------------------------------------------------------------------------------
+
+len_after = len(finalnut)
+len_before = len(newnut2)
+len_difference = len(newnut2) - len(finalnut)
+print('We reduced our data size from {} foods by {} foods to {} foods.'.format(len_before, len_difference, len_after))
+
 #%% Linear fit
+newnut3 = newnut2
+
 from sklearn.linear_model import LinearRegression
 
-X = newnut2[['total_fat', 'carbohydrate', 'sodium', 'protein']] 
-Y = newnut2['calories']
+X = newnut3[['total_fat', 'carbohydrate', 'sodium', 'protein']] 
+Y = newnut3['calories']
 
 # with sklearn
 regressionname = LinearRegression()
