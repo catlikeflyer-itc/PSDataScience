@@ -1,5 +1,5 @@
 """
-Write all the code here bois
+Write all the code here 
 """
 #%% imports (they work fine)
 import pandas as pd
@@ -18,13 +18,11 @@ nut = pd.read_csv('nutrition.csv', index_col=1) #nut :)
 print(f'Dataframe of size {nut.shape[0]} and {nut.shape[1]}')
 
 #%% Cleaned dF
-
 newnut = nut.dropna()
 newnut2 = newnut[['calories','total_fat','carbohydrate','sodium','protein']]
 newnut2
 
 #%% Convert mg to g
-
 newnut2['sodium'] = newnut2['sodium'].str.rstrip('mg').astype('float')
 newnut2['total_fat'] = newnut2['total_fat'].str.rstrip('g').astype('float')
 newnut2['carbohydrate'] = newnut2['carbohydrate'].str.rstrip('g').astype('float')
@@ -65,7 +63,7 @@ sns.boxplot(x=newnut2['protein'], color="blue", ax=axes[2, 0])
 
 f.delaxes(axes[2,1])
 
-#%%
+#%% Filters outliers
 Q1 = newnut2.quantile(0.25)
 Q3 = newnut2.quantile(0.75)
 IQR = Q3 - Q1
